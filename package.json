@@ -1,0 +1,25 @@
+{
+  "name": "@mauriora/build-tools",
+  "description": "Tools like incrementing versions of spfx builds",
+  "version": "0.0.1",
+  "private": true,
+  "main": "lib/index.js",
+  "bin": {
+    "incrementVersions": "./bin/incrementVersions",
+    "generateNewGuidsResetVersions": "./bin/generateNewGuidsResetVersions"
+  },
+  "author": {
+    "name": "Mauri-Ora",
+    "email": "dennis.kuhn@kuhn.geek.co.nz"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "scripts": {
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "chalk": "^4.1.2",
+    "versiony": "^2.0.1"
+  }
+}
