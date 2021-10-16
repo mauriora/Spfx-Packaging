@@ -1,12 +1,35 @@
 import fs from 'fs';
 import versiony from 'versiony';
 import chalk from 'chalk';
+import { getArgs } from '../shared/args/clit';
+import path from 'path';
+import { Static, Type } from '@sinclair/typebox';
+import { isOptions } from '../shared/args/IsOptions';
+import { ajvConsoleLogger } from '../shared/args/AjvLogger';
 
 const cwd = process.cwd();
 
-const packagePath = './package.json';
-const solutionPath = './config/package-solution.json';
-const manifestPath = './release/manifests/RateableAnnouncementsModelDeployment.manifest.json';
+const ArgsSchema = Type.Object(
+    {
+        packagePath: Type.Optional(Type.String({
+            default: './package.json',
+            description: 'If not specified "./package.json" will be used'
+        })),
+        solutionPath: Type.Optional(Type.String({
+            default: './config/package-solution.json',
+            description: 'If not specified "./package.json" will be used'
+        })),
+        _: Type.Optional(Type.Array(
+            Type.String(),
+            { description: 'addtional json files to update the version property of the root object' }
+        ))
+    },
+    {
+        additionalProperties: false
+    }
+);
+
+type Args = Static<typeof ArgsSchema>;
 
 class UpdateFileOptions {
     file: string;
@@ -23,8 +46,11 @@ interface JsonFile {
 const updateFile = (options: UpdateFileOptions) => {
     const newVersion = options.version + (options.parts === 4 ? '.0' : '');
     const targetName = `${chalk.cyan(options.file)}${options.nestedObject ? '.' + chalk.green(options.nestedObject) : ''}`;
+
     console.log(`Updating ${targetName}.version=${chalk.yellow(newVersion)}`);
-    const fileContent = require(options.file) as JsonFile;
+
+    const filePath = path.resolve(cwd, options.file);
+    const fileContent = require(filePath) as JsonFile;
     const target = options.nestedObject ? fileContent[options.nestedObject] as JsonFile : fileContent;
 
     target.version = newVersion;
@@ -32,7 +58,7 @@ const updateFile = (options: UpdateFileOptions) => {
         const array = target[options.arrayProperty];
         if (Array.isArray(array)) {
             for (const item of array) {
-                console.log(`Updating ${targetName}.${chalk.blueBright(options.arrayProperty)}[${chalk.green(item['title'] ?? item['id'])}].version=${chalk.yellow(newVersion)}`);
+                console.log(`Updating ${targetName}.${chalk.blueBright(options.arrayProperty)}[${chalk.greenBright(item['title'] ?? item['id'])}].version=${chalk.yellow(newVersion)}`);
                 item['version'] = newVersion;
             }
         } else {
@@ -43,26 +69,34 @@ const updateFile = (options: UpdateFileOptions) => {
     fs.writeFileSync(options.file, JSON.stringify(fileContent, null, 4))
 }
 
-export const main = () => {
-    const options = new UpdateFileOptions();
-    const newVersion = versiony
-        .patch()
-        .with(packagePath)
-        .end({ quiet: true });
+const main = () => {
+    const args: Args = getArgs();
 
-    options.version = newVersion.version;
+    if (isOptions(args, ArgsSchema)) {
+        const options = new UpdateFileOptions();
+        options.version = versiony
+            .patch()
+            .with(args.packagePath)
+            .end({ quiet: true })
+            .version;
 
-    console.log(`Updated ${chalk.cyan(packagePath)} to ${chalk.yellow(newVersion.version)}`);
+        console.log(`Updated ${chalk.cyan(args.packagePath)} to ${chalk.yellow(options.version)}` );
 
-    options.file = manifestPath;
-    options.parts = 3;
-    updateFile(options);
+        for (const additional of args._) {
+            options.file = additional;
+            options.parts = 3;
+            updateFile(options);
+        }
 
-    options.file = solutionPath;
-    options.nestedObject = 'solution';
-    options.arrayProperty = 'features';
-    options.parts = 4;
-    updateFile(options);
+        options.file = args.solutionPath;
+        options.nestedObject = 'solution';
+        options.arrayProperty = 'features';
+        options.parts = 4;
+        updateFile(options);
+    } else {
+        ajvConsoleLogger(args, ArgsSchema);
+    }
 };
 
 main();
+
