@@ -1,4 +1,11 @@
-#!/usr/bin/env node
-'use strict';
+#! /usr/bin/env node
 
-require('../src/scripts/incrementVersions');
+const path = require('path');
+const myTsConfig = path.resolve(__dirname, '..', 'tsconfig.json');
+
+require('ts-node').register( {
+    /** Required for types/versiony */
+    files: true,
+    project: myTsConfig 
+});
+require('../src/scripts/incrementVersions.ts');

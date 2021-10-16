@@ -1,46 +1,50 @@
-#!/usr/bin/env
+import fs from 'fs';
+import versiony from 'versiony';
+import chalk from 'chalk';
 
 const cwd = process.cwd();
-const fs = require('fs');
+
 const packagePath = './package.json';
 const solutionPath = './config/package-solution.json';
 const manifestPath = './release/manifests/RateableAnnouncementsModelDeployment.manifest.json';
 
-const versiony = require('versiony')
-const chalk = require('chalk');
-
-class Options {
-    file;
-    version;
-    nestedObject;
-    arrayProperty;
-    parts = 3;
+class UpdateFileOptions {
+    file: string;
+    version: string;
+    nestedObject: string;
+    arrayProperty: string;
+    parts: 3 | 4 = 3;
 }
 
-const updateFile = (options) => {
+interface JsonFile {
+    [key: string]: string | unknown | JsonFile;
+}
+
+const updateFile = (options: UpdateFileOptions) => {
     const newVersion = options.version + (options.parts === 4 ? '.0' : '');
     const targetName = `${chalk.cyan(options.file)}${options.nestedObject ? '.' + chalk.green(options.nestedObject) : ''}`;
     console.log(`Updating ${targetName}.version=${chalk.yellow(newVersion)}`);
-    const fileContent = require(options.file);
-    const target = options.nestedObject ? fileContent[options.nestedObject] : fileContent;
+    const fileContent = require(options.file) as JsonFile;
+    const target = options.nestedObject ? fileContent[options.nestedObject] as JsonFile : fileContent;
 
     target.version = newVersion;
     if (options.arrayProperty) {
-        if (typeof target[options.arrayProperty] === 'object') {
-            for (const item of target[options.arrayProperty]) {
+        const array = target[options.arrayProperty];
+        if (Array.isArray(array)) {
+            for (const item of array) {
                 console.log(`Updating ${targetName}.${chalk.blueBright(options.arrayProperty)}[${chalk.green(item['title'] ?? item['id'])}].version=${chalk.yellow(newVersion)}`);
                 item['version'] = newVersion;
             }
         } else {
-            console.error(`${targetName}.${options.arrayProperty} is of type ${typeof target[options.arrayProperty]}`)
+            console.error(`${targetName}.${options.arrayProperty} is not an array, it's of type ${typeof array}, constructor.name=${array?.constructor?.name}`, { target });
         }
     }
 
     fs.writeFileSync(options.file, JSON.stringify(fileContent, null, 4))
 }
 
-function main() {
-    const options = new Options();
+export const main = () => {
+    const options = new UpdateFileOptions();
     const newVersion = versiony
         .patch()
         .with(packagePath)
@@ -59,6 +63,6 @@ function main() {
     options.arrayProperty = 'features';
     options.parts = 4;
     updateFile(options);
-}
+};
 
 main();
