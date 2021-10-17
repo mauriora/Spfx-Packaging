@@ -27,8 +27,11 @@
     "versiony": "^2.0.1"
   },
   "devDependencies": {
+    "@mauriora/package-tools": "*",
     "@sinclair/typebox": "^0.20.5",
     "@types/minimist": "^1.2.2"
   },
-  "peerDependencies": {}
+  "peerDependencies": {
+    "@microsoft/rush-stack-compiler-4.2": "^0.1.1"
+  }
 }
