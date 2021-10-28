@@ -1,14 +1,14 @@
 {
   "name": "@mauriora/spfx-packaging",
   "description": "Tools like generating new guids, resetting version and incrementing versions.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "MIT",
   "private": false,
   "bin": {
     "incrementVersions": "./bin/incrementVersions",
     "generateNewGuidsResetVersions": "./bin/generateNewGuidsResetVersions"
   },
-  "files": [ "./bin", "./includes", "./src", "./types" ],
+  "files": [ "./bin", "./includes", "./src", "./types", "./tsconfig.json" ],
   "author": {
     "name": "Mauri-Ora",
     "email": "dennis.kuhn@kuhn.geek.co.nz"
