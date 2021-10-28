@@ -2,11 +2,12 @@
   "name": "@mauriora/spfx-packaging",
   "description": "Tools like generating new guids, resetting version and incrementing versions.",
   "version": "0.0.1",
-  "private": true,
+  "private": false,
   "bin": {
     "incrementVersions": "./bin/incrementVersions",
     "generateNewGuidsResetVersions": "./bin/generateNewGuidsResetVersions"
   },
+  "files": [ "./includes", "./src", "./types" ],
   "author": {
     "name": "Mauri-Ora",
     "email": "dennis.kuhn@kuhn.geek.co.nz"
