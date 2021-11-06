@@ -1,7 +1,7 @@
 {
   "name": "@mauriora/spfx-packaging",
   "description": "Tools like generating new guids, resetting version and incrementing versions.",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "license": "MIT",
   "private": false,
   "bin": {
@@ -22,7 +22,7 @@
   },
   "scripts": {},
   "dependencies": {
-    "@mauriora/package-tools": "^0.0.8",
+    "@mauriora/package-tools": "^0.0.9",
     "@sinclair/typebox": "^0.20.5",
     "@types/minimist": "^1.2.2",
     "@types/node": "^14.0.0",
