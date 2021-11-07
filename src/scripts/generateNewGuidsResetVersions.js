@@ -11,7 +11,6 @@ const solutionPath = path.resolve(__dirname, './config/package-solution.json');
 const extensionsPath = path.resolve(__dirname, './release/manifests');
 const manifestEnding = '.manifest.json';
 
-
 const updateFile = (file, id, version, nestedObject) => {
     console.log(`Updating ${path.basename(file)}${nestedObject ? '.' + nestedObject : '' } .id=${id} .version=${version} file=${file}`);
     const fileContent = require(file);
@@ -51,7 +50,8 @@ const ifManifestSetGuid = (folderName, fileName) =>
         MANIFEST_VERSION
     );
 
-const processWebPartFolderFiles = (folderName, files) => files.forEach(file => ifManifestSetGuid(folderName, file));
+const processWebPartFolderFiles = (folderName, files) => 
+    files.forEach(file => ifManifestSetGuid(folderName, file));
 
 const getWebPartFolderFiles = (folderName) =>
     fs.readdir(
@@ -59,9 +59,8 @@ const getWebPartFolderFiles = (folderName) =>
         (err, files) => processWebPartFolderFiles(folderName, files)
     );
 
-
-const processWebPartsFolder = (err, webPartFolders) => webPartFolders.forEach(getWebPartFolderFiles);
-
+const processWebPartsFolder = (err, webPartFolders) => 
+    webPartFolders.forEach(getWebPartFolderFiles);
 
 const setManifestsGuids = () => fs.readdir(extensionsPath, processWebPartsFolder);
 
