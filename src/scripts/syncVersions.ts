@@ -6,27 +6,27 @@ import path from 'path';
 import { Static, Type } from '@sinclair/typebox';
 import { isOptions } from '../shared/args/IsOptions';
 import { ajvConsoleLogger } from '../shared/args/AjvLogger';
-import simpleGit, { ResetMode, SimpleGit } from 'simple-git';
+import simpleGit, { SimpleGit } from 'simple-git';
 
 const cwd = process.cwd();
 
 const ArgsSchema = Type.Object(
     {
         packagePath: Type.Optional(Type.String({
-            default: './package.json',
-            description: 'If not specified "./package.json" will be used'
+            default: './package.json'
         })),
         solutionPath: Type.Optional(Type.String({
-            default: './config/package-solution.json',
-            description: 'If not specified "./config/package-solution.json" will be used'
+            default: './config/package-solution.json'
         })),
         gitAdd: Type.Optional(Type.Boolean({
             default: true,
-            description: 'stage modified files, default true'
+            description: 'stage modified files'
         })),
         _: Type.Optional(Type.Array(
             Type.String(),
-            { description: 'addtional json files to update the version property of the root object' }
+            {
+                description: 'addtional json files to update the version property of the root object' 
+            }
         ))
     },
     {
