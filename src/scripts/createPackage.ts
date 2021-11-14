@@ -38,10 +38,10 @@ const buildPackge = async ({bundle}: Args) => {
     gulpfileJs();
 
     const tasks: Task[] = [];
-    tasks.push('clean');
-    if(false !== bundle) {
-        tasks.push('bundle');
-    }
+    // tasks.push('clean');
+    // if(false !== bundle) {
+    //     tasks.push('bundle');
+    // }
     tasks.push('package-solution');
 
     try {
