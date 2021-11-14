@@ -10,6 +10,10 @@ import { OnDone } from '../shared/gulpTools/OnDone';
 
 const ArgsSchema = Type.Object(
     {
+        bundle: Type.Optional(Type.Boolean({
+            default: true,
+            description: 'if set then bundle task will be skipped'
+        })),
         ship: Type.Optional(Type.Boolean({
             description: 'if not set then a debug version is build'
         })),
@@ -30,14 +34,15 @@ const ArgsSchema = Type.Object(
 
 type Args = Static<typeof ArgsSchema>;
 
-const buildPackge = async () => {
+const buildPackge = async ({bundle}: Args) => {
     gulpfileJs();
 
-    const tasks: Task[] = [
-        'clean',
-        'bundle',
-        'package-solution',
-    ];
+    const tasks: Task[] = [];
+    tasks.push('clean');
+    if(false !== bundle) {
+        tasks.push('bundle');
+    }
+    tasks.push('package-solution');
 
     try {
         /**
@@ -56,7 +61,7 @@ const main = async () => {
     const args: Args = getArgs();
 
     if (isOptions(args, ArgsSchema)) {
-        await buildPackge();
+        await buildPackge(args);
     } else {
         ajvConsoleLogger(args, ArgsSchema);
     }
