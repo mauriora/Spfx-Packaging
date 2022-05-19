@@ -46,7 +46,7 @@ const buildPackge = async ({bundle}: Args) => {
 
     try {
         /**
-         * Use series wrapper so  gulp.onStart gulp.onStop now when to finish up.
+         * Use series wrapper so  gulp.onStart gulp.onStop know when to finish up.
          * located in node_modules\@microsoft\gulp-core-build\lib\logging.js
         */
         const taskSeries = series(series(tasks));
