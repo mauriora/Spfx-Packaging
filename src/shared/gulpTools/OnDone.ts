@@ -13,8 +13,11 @@ export class OnDone {
 
     private onDone: OnDoneFunction = (error) => {
         if (error) {
-            console.error(`${chalk.red('error:')}: ${chalk.redBright(error.message)}`);
+            console.error(`${chalk.red('onDone error:')}: ${chalk.redBright(error.message)}`);
+        } else {
+            console.log(`${chalk.greenBright('onDone')}`);
         }
-        this.resolver(error);
+        // this.resolver(error);
+        this.resolver(undefined);
     }
 }
