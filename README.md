@@ -1,5 +1,16 @@
 # Spfx Packaging
 
+- [Overview](#overview)
+- [Wrapper scripts](#wrapper-scripts)
+  - [Example use in package.json](#example-use-in-packagejson)
+  - [createPackage](#createpackage)
+  - [servePackage](#servepackage)
+  - [publishPackage](#publishpackage)
+  - [syncVersions](#syncversions)
+- [Tools](#tools)
+  - [incrementVersions](#incrementversions)
+  - [generateNewGuidsResetVersions](#generatenewguidsresetversions)
+
 ## Overview
 
 Type scripts to handle routine tasks with Spfx packages not handled by PnP or sp build tools.
@@ -7,10 +18,12 @@ Type scripts to handle routine tasks with Spfx packages not handled by PnP or sp
 The wrapper scripts `createPackage`, `servePackage`, `syncVersions`, `publishPackage` provide an uniform way to upgrade the build process.
 
 ## Wrapper scripts
+
 `createPackage`, `servePackage`, `syncVersions`, `publishPackage` are Typescript gulp scripts using `@sinclair/typebox` and `better-ajv-errors`.
 The intent is to call these scripts from each Spfx project with simple parameters. Upgrade to the process should be done in the scripts, to ensure the same up-to-date process for all projects.
 
-### Example use in package.json:
+### Example use in package.json
+
 ```json
 {
   "scripts": {
@@ -28,17 +41,20 @@ The intent is to call these scripts from each Spfx project with simple parameter
 ### createPackage
 
 Parameters:
+
 - `bundle`: optional: if set then bundle task will be skipped, default is true
 - `ship`: optional: if not set then a debug version is build
 
 ### servePackage
 
 Parameters:
+
 - `nobrowser`: optional: avoids opening a browser each time serve is started, default: false'
 
 ### publishPackage
 
 Parameters:
+
 - `solutionPath`: optional: Used to get paths.zippedPackage, default is './config/package-solution.json'
 - `message`: optional: a string publish
 - [`git`]: required: target
@@ -47,12 +63,14 @@ Parameters:
 ### syncVersions
 
 Parameters:
+
 - `packagePath`: optional: default is './package.json'
 - `solutionPath`: optional: default is './config/package-solution.json'
-- `gitAdd`: optional: stage modified files, default is true 
+- `gitAdd`: optional: stage modified files, default is true
 - [...]: optional: addtional json files to update the version property of the root object
 
 ## Tools
+
 ### incrementVersions
 
 increments the version and `package.json` and then use it in the `package-solution.json` and possible `*.manifest.json`
