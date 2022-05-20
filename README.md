@@ -1,6 +1,7 @@
 # Spfx Packaging
 
 - [Overview](#overview)
+- [Yarn 2+](#yarn-2)
 - [Wrapper scripts](#wrapper-scripts)
   - [Example use in package.json](#example-use-in-packagejson)
   - [createPackage](#createpackage)
@@ -16,6 +17,10 @@
 Type scripts to handle routine tasks with Spfx packages not handled by PnP or sp build tools.
 
 The wrapper scripts `createPackage`, `servePackage`, `syncVersions`, `publishPackage` provide an uniform way to upgrade the build process.
+
+## Yarn 2+
+
+Copy the file [.yarnrc.yml](./.yarnrc.yml) to your project.
 
 ## Wrapper scripts
 
