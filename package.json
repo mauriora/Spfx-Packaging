@@ -1,9 +1,8 @@
 {
   "name": "@mauriora/spfx-packaging",
   "description": "Tools like generating new guids, resetting version and incrementing versions.",
-  "version": "0.0.15",
+  "version": "0.0.17",
   "license": "MIT",
-  "private": false,
   "bin": {
     "createPackage": "./bin/createPackage",
     "generateNewGuidsResetVersions": "./bin/generateNewGuidsResetVersions",
@@ -23,7 +22,6 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "scripts": {},
   "dependencies": {
     "@mauriora/package-tools": "^0.0.10",
     "@microsoft/rush-stack-compiler-4.2": "^0.1.1",
@@ -35,15 +33,15 @@
     "ajv-formats": "^2.1.1",
     "better-ajv-errors": "^0.7.0",
     "chalk": "^4.1.2",
+    "find-parent-dir": "^0.3.1",
     "gulp": "^4.0.2",
     "gulp-eslint7": "^0.3.2",
     "minimist": "^1.2.5",
     "simple-git": "^2.47.0",
     "ts-node": "^10.3.0",
     "typescript": "~4.2.4",
+    "undertaker": "^1.3.0",
     "versiony": "^2.0.1"
-  },
-  "peerDependencies": {
   },
   "devDependencies": {
     "@microsoft/sp-build-web": "1.12.1",
