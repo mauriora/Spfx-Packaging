@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "@mauriora/package-tools": "^0.0.10",
+    "@mauriora/simpleprocess": "workspace:^",
     "@microsoft/rush-stack-compiler-4.2": "^0.1.1",
     "@microsoft/sp-build-web": "1.12.1",
     "@sinclair/typebox": "^0.20.5",

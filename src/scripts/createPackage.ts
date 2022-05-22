@@ -4,7 +4,7 @@ import { cwd, exit } from 'process';
 import { ajvConsoleLogger } from '../shared/args/AjvLogger';
 import { getArgs } from '../shared/args/clit';
 import { isOptions } from '../shared/args/IsOptions';
-import simpleProcess from '../shared/simpleProcess';
+import { simpleProcess } from '@mauriora/simpleprocess';
 
 
 const ArgsSchema = Type.Object(
