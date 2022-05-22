@@ -1,12 +1,9 @@
-import { getArgs } from '../shared/args/clit';
 import { Static, Type } from '@sinclair/typebox';
-import { isOptions } from '../shared/args/IsOptions';
+import { exit } from 'process';
 import { ajvConsoleLogger } from '../shared/args/AjvLogger';
-import { series, } from 'gulp';
-import gulpfileJs from './gulpfile';
-import chalk from 'chalk';
-import { Task } from 'undertaker';
-import { OnDone } from '../shared/gulpTools/OnDone';
+import { getArgs } from '../shared/args/clit';
+import { isOptions } from '../shared/args/IsOptions';
+import simpleProcess from '../shared/simpleProcess';
 
 const ArgsSchema = Type.Object(
     {
@@ -34,33 +31,25 @@ const ArgsSchema = Type.Object(
 
 type Args = Static<typeof ArgsSchema>;
 
-const servePackage = async () => {
-    gulpfileJs();
-
-    const tasks: Task[] = [ 'serve-deprecated' ];
-
-
-    try {
-        /**
-         * Use series wrapper so  gulp.onStart gulp.onStop know when to finish up.
-         * located in node_modules\@microsoft\gulp-core-build\lib\logging.js
-        */
-        const taskSeries = series(series(tasks));
-
-        await new OnDone().run(taskSeries);
-    } catch (jobsError) {
-        console.error(`${chalk.red('Error running job')} ${chalk.redBright((jobsError as Error)?.message)}`);
-    }
-}
-
-const main = async () => {
+const main = async (): Promise<boolean> => {
     const args: Args = getArgs();
 
-    if (isOptions(args, ArgsSchema)) {
-        await servePackage();
-    } else {
+    if (! isOptions(args, ArgsSchema)) {
         ajvConsoleLogger(args, ArgsSchema);
+        return false;
     }
+    const task = ['serve-deprecated'];
+    if (args.nobrowser) {
+        task.push( '--nobrowser')
+    }
+    return simpleProcess('gulp', task);
 };
 
-main();
+main()
+    .then(result => {
+        if (result) {
+            exit(0);
+        } else {
+            exit(1);
+        }
+    });
