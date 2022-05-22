@@ -8,6 +8,7 @@ The wrapper scripts `createPackage`, `servePackage`, `syncVersions`, `publishPac
 - [Wrapper scripts](#wrapper-scripts)
   - [Example use in package.json](#example-use-in-packagejson)
   - [createPackage](#createpackage)
+    - [Example](#example)
   - [servePackage](#servepackage)
   - [publishPackage](#publishpackage)
   - [syncVersions](#syncversions)
@@ -46,6 +47,14 @@ Parameters:
 
 - `bundle`: optional: if set to false then bundle task will be skipped, default is true
 - `ship`: optional: if not set then a debug version is build
+
+#### Example
+
+For artifact deployment without built
+
+```shell
+createPackage --no-bundle --ship
+```
 
 ### servePackage
 
