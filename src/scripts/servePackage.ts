@@ -1,5 +1,6 @@
 import { Static, Type } from '@sinclair/typebox';
-import { exit } from 'process';
+import { join } from 'path';
+import { cwd, exit } from 'process';
 import { ajvConsoleLogger } from '../shared/args/AjvLogger';
 import { getArgs } from '../shared/args/clit';
 import { isOptions } from '../shared/args/IsOptions';
@@ -38,10 +39,15 @@ const main = async (): Promise<boolean> => {
         ajvConsoleLogger(args, ArgsSchema);
         return false;
     }
-    const task = ['serve-deprecated'];
+    const task = [
+        `--cwd "${cwd()}"`,
+        `--gulpfile "${join(__dirname, 'gulpfile.js')}"`,
+        'serve-deprecated'
+    ];
     if (args.nobrowser) {
         task.push( '--nobrowser')
     }
+
     return simpleProcess('gulp', task);
 };
 

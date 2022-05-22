@@ -1,5 +1,6 @@
 import { Static, Type } from '@sinclair/typebox';
-import { exit } from 'process';
+import { resolve } from 'path';
+import { cwd, exit } from 'process';
 import { ajvConsoleLogger } from '../shared/args/AjvLogger';
 import { getArgs } from '../shared/args/clit';
 import { isOptions } from '../shared/args/IsOptions';
@@ -35,16 +36,20 @@ type Args = Static<typeof ArgsSchema>;
 
 const buildPackge = async ({ bundle, ship }: Args): Promise<boolean> => {
 
+    const gulpOptions = [
+        `--cwd "${cwd()}"`,
+        `--gulpfile "${resolve(__dirname, '../shared', 'gulpfile.js') }"`
+    ];
     const common = ship ? ['--ship'] : [];
-    const tasks: Array<string[]> = [['clean', ...common]];
+    const tasks: Array<string> = ['clean'];
 
     if (false !== bundle) {
-        tasks.push(['bundle', ...common ]);
+        tasks.push('bundle');
     }
-    tasks.push(['package-solution', ...common]);
+    tasks.push('package-solution');
 
     for (const task of tasks) {
-        if (false === (await simpleProcess('gulp', task))) {
+        if (false === (await simpleProcess('gulp', [...gulpOptions, task, ...common]))) {
             return false;
         }
     }
