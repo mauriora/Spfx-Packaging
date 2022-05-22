@@ -1,6 +1,9 @@
 # Spfx Packaging
 
-- [Overview](#overview)
+Typescripts to handle routine tasks with Spfx packages not handled by PnP or sp build tools.
+
+The wrapper scripts `createPackage`, `servePackage`, `syncVersions`, `publishPackage` provide an uniform way to upgrade the build process.
+
 - [Yarn 2+](#yarn-2)
 - [Wrapper scripts](#wrapper-scripts)
   - [Example use in package.json](#example-use-in-packagejson)
@@ -12,27 +15,21 @@
   - [incrementVersions](#incrementversions)
   - [generateNewGuidsResetVersions](#generatenewguidsresetversions)
 
-## Overview
-
-Type scripts to handle routine tasks with Spfx packages not handled by PnP or sp build tools.
-
-The wrapper scripts `createPackage`, `servePackage`, `syncVersions`, `publishPackage` provide an uniform way to upgrade the build process.
-
 ## Yarn 2+
 
 Copy the file [.yarnrc.yml](./.yarnrc.yml) to your project.
 
 ## Wrapper scripts
 
-`createPackage`, `servePackage`, `syncVersions`, `publishPackage` are Typescript gulp scripts using `@sinclair/typebox` and `better-ajv-errors`.
-The intent is to call these scripts from each Spfx project with simple parameters. Upgrade to the process should be done in the scripts, to ensure the same up-to-date process for all projects.
+`createPackage`, `servePackage`, `syncVersions`, `publishPackage` are Typescript scripts using `@sinclair/typebox` and `better-ajv-errors`.
+The intent is to call these scripts from each Spfx project with simple parameters. Upgrade to the process should be done in the scripts, to ensure the same up-to-date process for all projects. They use the common [gulpfile.js](./src/shared/gulpfile.js) .
 
 ### Example use in package.json
 
 ```json
 {
   "scripts": {
-    "build": "createPackage",
+    "build": "createPackage --ship",
     "serve": "servePackage",
     "version": "syncVersions",
     "publish": "publishPackage git"
@@ -47,7 +44,7 @@ The intent is to call these scripts from each Spfx project with simple parameter
 
 Parameters:
 
-- `bundle`: optional: if set then bundle task will be skipped, default is true
+- `bundle`: optional: if set to false then bundle task will be skipped, default is true
 - `ship`: optional: if not set then a debug version is build
 
 ### servePackage
