@@ -1,18 +1,17 @@
-import { getArgs } from '../shared/args/clit';
 import { Static, Type } from '@sinclair/typebox';
-import { isOptions } from '../shared/args/IsOptions';
+import { resolve } from 'path';
+import { cwd, exit } from 'process';
 import { ajvConsoleLogger } from '../shared/args/AjvLogger';
-import { series, } from 'gulp';
-import gulpfileJs from './gulpfile';
-import chalk from 'chalk';
-import { Task } from 'undertaker';
-import { OnDone } from '../shared/gulpTools/OnDone';
+import { getArgs } from '../shared/args/clit';
+import { isOptions } from '../shared/args/IsOptions';
+import { simpleProcess } from '@mauriora/simpleprocess';
+
 
 const ArgsSchema = Type.Object(
     {
         bundle: Type.Optional(Type.Boolean({
             default: true,
-            description: 'if set then bundle task will be skipped'
+            description: 'if set and false then bundle task will be skipped'
         })),
         ship: Type.Optional(Type.Boolean({
             description: 'if not set then a debug version is build'
@@ -34,37 +33,44 @@ const ArgsSchema = Type.Object(
 
 type Args = Static<typeof ArgsSchema>;
 
-const buildPackge = async ({bundle}: Args) => {
-    gulpfileJs();
 
-    const tasks: Task[] = [];
-    tasks.push('clean');
-    if(false !== bundle) {
+const buildPackge = async ({ bundle, ship }: Args): Promise<boolean> => {
+
+    const gulpOptions = [
+        `--cwd "${cwd()}"`,
+        `--gulpfile "${resolve(__dirname, '../shared', 'gulpfile.js') }"`
+    ];
+    const common = ship ? ['--ship'] : [];
+    const tasks: Array<string> = ['clean'];
+
+    if (false !== bundle) {
         tasks.push('bundle');
     }
     tasks.push('package-solution');
 
-    try {
-        /**
-         * Use series wrapper so  gulp.onStart gulp.onStop know when to finish up.
-         * located in node_modules\@microsoft\gulp-core-build\lib\logging.js
-        */
-        const taskSeries = series(series(tasks));
-
-        await new OnDone().run(taskSeries);
-    } catch (jobsError) {
-        console.error(`${chalk.red('Error running job')} ${chalk.redBright((jobsError as Error)?.message)}`);
+    for (const task of tasks) {
+        if (false === (await simpleProcess('gulp', [...gulpOptions, task, ...common]))) {
+            return false;
+        }
     }
+    return true;
 }
 
-const main = async () => {
+const main = async (): Promise<boolean> => {
     const args: Args = getArgs();
 
-    if (isOptions(args, ArgsSchema)) {
-        await buildPackge(args);
-    } else {
+    if (! isOptions(args, ArgsSchema)) {
         ajvConsoleLogger(args, ArgsSchema);
+        return false;
     }
+    return buildPackge(args);
 };
 
-main();
+main()
+    .then(result => {
+        if (result) {
+            exit(0);
+        } else {
+            exit(1);
+        }
+    });
