@@ -1,14 +1,15 @@
 {
   "name": "@mauriora/spfx-packaging",
   "description": "Tools like generating new guids, resetting version and incrementing versions.",
-  "version": "0.0.17",
+  "version": "0.1.0",
   "license": "MIT",
   "bin": {
     "createPackage": "./bin/createPackage",
     "generateNewGuidsResetVersions": "./bin/generateNewGuidsResetVersions",
     "publishPackage": "./bin/publishPackage",
     "servePackage": "./bin/servePackage",
-    "syncVersions": "./bin/syncVersions"
+    "syncVersions": "./bin/syncVersions",
+    "trustDevCert": "./bin/trustDevCert"
   },
   "files": [
     "./bin",
