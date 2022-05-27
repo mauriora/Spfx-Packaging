@@ -1,10 +1,10 @@
+import { simpleProcess } from '@mauriora/simpleprocess';
 import { Static, Type } from '@sinclair/typebox';
-import { join } from 'path';
+import { resolve } from 'path';
 import { cwd, exit } from 'process';
 import { ajvConsoleLogger } from '../shared/args/AjvLogger';
 import { getArgs } from '../shared/args/clit';
 import { isOptions } from '../shared/args/IsOptions';
-import { simpleProcess } from '@mauriora/simpleprocess';
 
 const ArgsSchema = Type.Object(
     {
@@ -41,7 +41,7 @@ const main = async (): Promise<boolean> => {
     }
     const task = [
         `--cwd "${cwd()}"`,
-        `--gulpfile "${join(__dirname, 'gulpfile.js')}"`,
+        `--gulpfile "${resolve(__dirname, '../shared', 'gulpfile.js')}"`,
         'serve-deprecated'
     ];
     if (args.nobrowser) {
