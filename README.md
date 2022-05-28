@@ -1,6 +1,7 @@
 # Spfx Packaging
 
 Typescripts to handle routine tasks with Spfx packages not handled by PnP or sp build tools.
+It contains defualt config files to keep project settings in sync.
 
 The wrapper scripts `createPackage`, `servePackage`, `syncVersions`, `publishPackage` provide an uniform way to upgrade the build process.
 
@@ -8,17 +9,44 @@ The wrapper scripts `createPackage`, `servePackage`, `syncVersions`, `publishPac
 - [Wrapper scripts](#wrapper-scripts)
   - [Example use in package.json](#example-use-in-packagejson)
   - [createPackage](#createpackage)
-    - [Example](#example)
+    - [createPackage example](#createpackage-example)
   - [servePackage](#servepackage)
   - [publishPackage](#publishpackage)
   - [syncVersions](#syncversions)
 - [Tools](#tools)
   - [incrementVersions](#incrementversions)
   - [generateNewGuidsResetVersions](#generatenewguidsresetversions)
+  - [trustDevCert](#trustdevcert)
+    - [trustDevCert example](#trustdevcert-example)
 
 ## Yarn 2+
 
 Copy the file [.yarnrc.yml](./.yarnrc.yml) to your project.
+
+## tsconfig.json
+
+This package contains a `tsconfig.json` file to be reused in SPFx projects to ensure a common configuration. It enables a common upgrade as well.
+
+### tsconfig example
+
+tsconfig.json in your project:
+
+```json
+{
+  "extends": "@mauriora/spfx-packaging/includes/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./lib",
+    "rootDir": "./src",
+    "typeRoots": [
+      "./node_modules/@types", "./node_modules/@microsoft"      
+    ]
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ]
+}
+```
 
 ## Wrapper scripts
 
@@ -48,7 +76,7 @@ Parameters:
 - `bundle`: optional: if set to false then bundle task will be skipped, default is true
 - `ship`: optional: if not set then a debug version is build
 
-#### Example
+#### createPackage example
 
 For artifact deployment without built
 
@@ -89,3 +117,15 @@ increments the version and `package.json` and then use it in the `package-soluti
 ### generateNewGuidsResetVersions
 
 Resets the version to *0.0.1* and generates new GUIDs in `package-solution.json` and for the component in the `*.manifest.json`.
+
+### trustDevCert
+
+Call this when you first want to `serve` a package for debugging. It creates and trusts a certificate on your local PC for your local webpack server.
+
+#### trustDevCert example
+
+For artifact deployment without built
+
+```shell
+    yarn run trustDevCert
+```
