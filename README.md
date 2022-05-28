@@ -5,6 +5,11 @@ It contains defualt config files to keep project settings in sync.
 
 The wrapper scripts `createPackage`, `servePackage`, `syncVersions`, `publishPackage` provide an uniform way to upgrade the build process.
 
+> This is part of the [hybrid repro MVC SharePoint example implementation](https://github.com/mauriora/reusable-hybrid-repo-mvc-spfx-examples)
+
+## Table of content
+
+- [Table of content](#table-of-content)
 - [Yarn 2+](#yarn-2)
 - [tsconfig.json](#tsconfigjson)
   - [tsconfig example](#tsconfig-example)
