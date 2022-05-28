@@ -6,6 +6,8 @@ It contains defualt config files to keep project settings in sync.
 The wrapper scripts `createPackage`, `servePackage`, `syncVersions`, `publishPackage` provide an uniform way to upgrade the build process.
 
 - [Yarn 2+](#yarn-2)
+- [tsconfig.json](#tsconfigjson)
+  - [tsconfig example](#tsconfig-example)
 - [Wrapper scripts](#wrapper-scripts)
   - [Example use in package.json](#example-use-in-packagejson)
   - [createPackage](#createpackage)
@@ -21,7 +23,14 @@ The wrapper scripts `createPackage`, `servePackage`, `syncVersions`, `publishPac
 
 ## Yarn 2+
 
-Copy the file [.yarnrc.yml](./.yarnrc.yml) to your project.
+Copy the file [.yarnrc.yml](./.yarnrc.yml) to your project. It fixes child module dependency errors  like:
+
+```yaml
+packageExtensions:
+  "@microsoft/gulp-core-build-typescript@*":
+    dependencies:
+      "@microsoft/rush-stack-compiler-3.2": "*"
+```
 
 ## tsconfig.json
 
