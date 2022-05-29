@@ -24,6 +24,7 @@
     "node": ">=14.0.0"
   },
   "dependencies": {
+    "@mauriora/minimist-better-ajv-errors-cli": "workspace:^",
     "@mauriora/package-tools": "^0.1.0",
     "@mauriora/simpleprocess": "workspace:^",
     "@microsoft/rush-stack-compiler-4.2": "^0.1.2",
@@ -32,7 +33,7 @@
     "@types/minimist": "^1.2.2",
     "ajv": "^8.11.0",
     "ajv-formats": "^2.1.1",
-    "better-ajv-errors": "^0.7.0",
+    "better-ajv-errors": "^1.2.0",
     "chalk": "^4.1.2",
     "find-parent-dir": "^0.3.1",
     "gulp": "^4.0.2",

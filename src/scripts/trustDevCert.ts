@@ -1,10 +1,8 @@
+import { ajvConsoleLogger, getArgs, isOptions } from '@mauriora/minimist-better-ajv-errors-cli';
+import { simpleProcess } from '@mauriora/simpleprocess';
 import { Static, Type } from '@sinclair/typebox';
 import { resolve } from 'path';
 import { cwd, exit } from 'process';
-import { ajvConsoleLogger } from '../shared/args/AjvLogger';
-import { getArgs } from '../shared/args/clit';
-import { isOptions } from '../shared/args/IsOptions';
-import { simpleProcess } from '@mauriora/simpleprocess';
 
 
 const ArgsSchema = Type.Object(

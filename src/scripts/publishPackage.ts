@@ -1,8 +1,6 @@
 import { Static, Type } from '@sinclair/typebox';
 import path from 'path';
-import { ajvConsoleLogger } from '../shared/args/AjvLogger';
-import { getArgs } from '../shared/args/clit';
-import { isOptions } from '../shared/args/IsOptions';
+import { ajvConsoleLogger, getArgs, isOptions } from '@mauriora/minimist-better-ajv-errors-cli';
 import { gitPackage } from './gitPackage';
 import { getFile } from './SolutionFile';
 
