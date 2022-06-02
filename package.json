@@ -1,7 +1,7 @@
 {
   "name": "@mauriora/spfx-packaging",
   "description": "Tools like generating new guids, resetting version and incrementing versions.",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "license": "MIT",
   "bin": {
     "createPackage": "./bin/createPackage",
@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "@mauriora/minimist-better-ajv-errors-cli": "workspace:^",
-    "@mauriora/package-tools": "^0.1.1",
+    "@mauriora/package-tools": "^0.1.2",
     "@mauriora/simpleprocess": "workspace:^",
     "@microsoft/rush-stack-compiler-4.5": "^0.2.1",
     "@microsoft/sp-build-web": "1.14.0",
