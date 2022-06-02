@@ -1,7 +1,7 @@
-# Spfx Packaging
+# SPFx Packaging
 
-Typescripts to handle routine tasks with Spfx packages not handled by PnP or sp build tools.
-It contains defualt config files to keep project settings in sync.
+Typescripts to handle routine tasks with SPFx packages not handled by PnP or sp build tools.
+It contains default config files to keep project settings in sync.
 
 The wrapper scripts `createPackage`, `servePackage`, `syncVersions`, `publishPackage` provide an uniform way to upgrade the build process.
 
