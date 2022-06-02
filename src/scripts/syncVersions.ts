@@ -1,12 +1,10 @@
-import fs from 'fs';
-import versiony from 'versiony';
-import chalk from 'chalk';
-import { getArgs } from '../shared/args/clit';
-import path from 'path';
+import { ajvConsoleLogger, getArgs, isOptions } from '@mauriora/minimist-better-ajv-errors-cli';
 import { Static, Type } from '@sinclair/typebox';
-import { isOptions } from '../shared/args/IsOptions';
-import { ajvConsoleLogger } from '../shared/args/AjvLogger';
+import chalk from 'chalk';
+import fs from 'fs';
+import path from 'path';
 import simpleGit, { SimpleGit } from 'simple-git';
+import versiony from 'versiony';
 
 const cwd = process.cwd();
 

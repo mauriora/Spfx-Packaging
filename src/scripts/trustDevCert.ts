@@ -1,20 +1,12 @@
+import { ajvConsoleLogger, getArgs, isOptions } from '@mauriora/minimist-better-ajv-errors-cli';
+import { simpleProcess } from '@mauriora/simpleprocess';
 import { Static, Type } from '@sinclair/typebox';
 import { resolve } from 'path';
 import { cwd, exit } from 'process';
-import { ajvConsoleLogger, getArgs, isOptions } from '@mauriora/minimist-better-ajv-errors-cli';
-import { simpleProcess } from '@mauriora/simpleprocess';
 
 
 const ArgsSchema = Type.Object(
     {
-        bundle: Type.Optional(Type.Boolean({
-            default: true,
-            description: 'if set and false then bundle task will be skipped'
-        })),
-        ship: Type.Optional(Type.Boolean({
-            description: 'if not set then a debug version is build'
-        })),
-
         _: Type.Optional(Type.Array(
             Type.String(),
             {
@@ -32,22 +24,16 @@ const ArgsSchema = Type.Object(
 type Args = Static<typeof ArgsSchema>;
 
 
-const buildPackge = async ({ bundle, ship }: Args): Promise<boolean> => {
+const trustDevCert = async ({}: Args): Promise<boolean> => {
 
     const gulpOptions = [
         `--cwd "${cwd()}"`,
         `--gulpfile "${resolve(__dirname, '../shared', 'gulpfile.js') }"`
     ];
-    const common = ship ? ['--ship'] : [];
-    const tasks: Array<string> = ['clean'];
-
-    if (false !== bundle) {
-        tasks.push('bundle');
-    }
-    tasks.push('package-solution');
+    const tasks: Array<string> = ['trust-dev-cert'];
 
     for (const task of tasks) {
-        if (false === (await simpleProcess('gulp', [...gulpOptions, task, ...common]))) {
+        if (false === (await simpleProcess('gulp', [...gulpOptions, task]))) {
             return false;
         }
     }
@@ -61,7 +47,7 @@ const main = async (): Promise<boolean> => {
         ajvConsoleLogger(args, ArgsSchema);
         return false;
     }
-    return buildPackge(args);
+    return trustDevCert(args);
 };
 
 main()
